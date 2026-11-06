@@ -285,6 +285,35 @@
   mute.onclick=function(){ song.muted=!song.muted; mute.textContent=song.muted?'🔇':'🔊'; };
 })();
 </script>
+
+<script>
+/* screens narrower than the side-by-side layout: heart on top (resized to fit), code typing below it.
+   Runs again on every resize, because some viewers report a tiny width at first. */
+function fitLayout() {
+  var w = window.innerWidth;
+  if (!w || w < 200) return;
+  var $c = $("#content"), $h = $("#loveHeart"), $code = $("#code");
+  if (w >= 1130) {
+    $h.insertAfter($code);
+    $h.css({ transform: "", "transform-origin": "", "margin-left": "", "margin-right": "", "margin-bottom": "", float: "" });
+    $code.css({ float: "", width: "", height: "", "min-height": "", "font-size": "", padding: "" });
+    $c.css({ display: "", "flex-direction": "", width: 1110, height: 620, "margin-left": Math.max((w - 1110) / 2, 10) });
+    $("html, body").css({ height: "" });
+  } else {
+    var s = Math.min(1, (w - 16) / 670);
+    $h.insertBefore($code);
+    $c.css({ display: "flex", "flex-direction": "column", width: w, height: "auto", "margin-left": 0 });
+    $h.css({ float: "none", transform: "scale(" + s + ")", "transform-origin": "top left",
+      "margin-left": (w - 670 * s) / 2, "margin-right": 670 * s - 670, "margin-bottom": 620 * s - 620 });
+    $code.css({ float: "none", width: "auto", height: "auto", "min-height": "420px",
+      "font-size": w < 600 ? "12px" : "14px", padding: "0 14px 110px" });
+    $("html, body").css({ background: "#070707", height: "auto" });
+  }
+}
+$(fitLayout);
+window.addEventListener("load", fitLayout);
+window.addEventListener("resize", fitLayout);
+</script>
 </body>
 
 </html>
